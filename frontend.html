@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Course Recommendation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Course Recommendation System</h1>
+<textarea id="preferences" placeholder="Enter your preferences..."></textarea>
+<button onclick="getRecommendations()">Get Recommendations</button>
+<div id="results"></div>
+<script>
+function getRecommendations() {
+    const preferences = document.getElementById("preferences").value;
+    fetch('/recommend', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({preferences})
+    })
+    .then(response => response.json())
+    .then(data => {
+        let output = '';
+        data.forEach(course => {
+            output += `<h3>${course.title}</h3><p>${course.description}</p>`;
+        });
+        document.getElementById("results").innerHTML = output;
+    });
+}
+</script>
+</body>
+</html>
